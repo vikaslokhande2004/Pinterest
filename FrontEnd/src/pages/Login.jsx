@@ -1,41 +1,52 @@
-import React, { useState } from "react";
-import { assets } from "../assets/assets";
+import React, { useContext, useState, useEffect } from "react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { AppContext } from "../context/AppContext";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const showpass = () => {
     setShowPassword(!showPassword)
   }
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { backendUrl, assets, setToken, token } = useContext(AppContext)
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post('http://localhost:3000/api/v1/user/login', {
+      const { data } = await axios.post(backendUrl + '/user/login', {
         email,
         password,
-      });
+      },{ withCredentials: true });
       if (data.success) {
         toast.success(data.message);
+        navigate('/')
       } else {
         toast.error(data.message)
+        navigate('/Login')
       }
-
       console.log(data);
       console.log(data.message);
     } catch (error) {
       toast.error(error.message)
-      alert("Sonthing with worng")
     }
   }
+
+  useEffect(() => {
+    if (token) {
+      navigate('/')
+    }
+  }, [token])
+
 
   return (
     <>
@@ -58,7 +69,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-[22vw] h-10 p-3 border-none outline-none text-black bg-[#dee2e6] rounded-lg" placeholder="Password" />
             <span className=" absolute right-2" onClick={showpass} > {showPassword ? <IoMdEyeOff className=" text-xl" /> : <IoMdEye className="text-xl" />} </span>
-            <button  type='submit' className="w-[22vw] h-10 text-white font-bold border-none outline-none rounded-full bg-[#e60023] hover:bg-[#d62828]">Log in</button>
+            <button type='submit' className="w-[22vw] h-10 text-white font-bold border-none outline-none rounded-full bg-[#e60023] hover:bg-[#d62828]">Log in</button>
           </form>
           <a className="cursor-pointer my-2">Forgotten your password?</a>
           <a className="text-xs cursor-pointer">Not on Pinterest yet? Sign up</a>

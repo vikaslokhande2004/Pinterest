@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { assets } from "../assets/assets";
+import React, { useContext, useState } from "react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { AppContext } from "../context/AppContext";
 
 function Singup() {
 
@@ -21,7 +21,7 @@ function Singup() {
 
     const [loading, setLoading] = useState(false);
 
-
+    const {backendUrl,assets} = useContext(AppContext)
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
@@ -37,7 +37,7 @@ function Singup() {
             // Only append files if they exist
             if (avatar) formData.append("avatar", avatar);
             if (coverImage) formData.append("coverImage", coverImage);
-            const { data } = await axios.post('http://localhost:3000/api/v1/user/register', formData, {
+            const { data } = await axios.post(backendUrl + '/user/register', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
