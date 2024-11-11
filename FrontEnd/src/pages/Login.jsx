@@ -29,6 +29,7 @@ const Login = () => {
       },{ withCredentials: true });
       if (data.success) {
         toast.success(data.message);
+        setToken(true)
         navigate('/')
       } else {
         toast.error(data.message)
@@ -47,6 +48,9 @@ const Login = () => {
     }
   }, [token])
 
+//   const singupPage = ()=>{
+//     navigate('/Login')
+// }
 
   return (
     <>
@@ -72,7 +76,7 @@ const Login = () => {
             <button type='submit' className="w-[22vw] h-10 text-white font-bold border-none outline-none rounded-full bg-[#e60023] hover:bg-[#d62828]">Log in</button>
           </form>
           <a className="cursor-pointer my-2">Forgotten your password?</a>
-          <a className="text-xs cursor-pointer">Not on Pinterest yet? Sign up</a>
+          {/* <a className="text-xs font-semibold cursor-pointer">Sign up</a> */}
         </div>
       </div>
     </>

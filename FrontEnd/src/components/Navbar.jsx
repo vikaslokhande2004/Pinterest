@@ -14,7 +14,7 @@ function Navbar() {
             withCredentials: true,
         });
         if (data.success) {
-            navigate('/Login')
+            setToken(false)
         }
         console.log(data)
     }

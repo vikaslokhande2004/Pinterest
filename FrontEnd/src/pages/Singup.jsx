@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { AppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 function Singup() {
 
@@ -20,6 +21,8 @@ function Singup() {
     const [password, setPassword] = useState('');
 
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate()
 
     const {backendUrl,assets} = useContext(AppContext)
 
@@ -45,8 +48,9 @@ function Singup() {
             setLoading(false);
             if (data.success) {
                 toast.success(data.message);
+                navigate('/Login')
             } else {
-                toast.error(data.message)
+                toast.error(data.message);
             }
 
             console.log(data);
@@ -58,6 +62,9 @@ function Singup() {
         }
     }
 
+    const loginpage = ()=>{
+        navigate('/Login')
+    }
 
     return (
         <>
@@ -69,7 +76,7 @@ function Singup() {
                 <p className="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
             </div> : <></>}
 
-            <div className="w-full h-screen flex items-center justify-center bg-zinc-900">
+            <div className="w-full flex pt-36 items-center justify-center bg-zinc-900">
                 <div className="w-[33vw] flex items-center justify- flex-col p-6 bg-[#ffffff] rounded-[30px]">
                     <div className="flex items-center justify-center flex-col gap-3">
                         <img src={assets.imglogo} className="w-[6vw]" />
@@ -118,7 +125,7 @@ function Singup() {
                         </div>
                         <button type='submit' className="w-[22vw] h-10 text-white font-bold border-none outline-none rounded-full bg-[#e60023] hover:bg-[#d62828]">Sing Up</button>
                     </form>
-                    <a className="text-xs font-bold cursor-pointer">Log in</a>
+                    <a onClick={loginpage} className="text-xs mt-2 font-bold cursor-pointer">Log in</a>
                 </div>
             </div>
         </>
